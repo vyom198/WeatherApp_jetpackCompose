@@ -41,15 +41,4 @@ fun BottomNavGraph(navController: NavHostController) {
 }
 
 
- fun navigateWithArguments(
-    argument: String? = null,
-    screen: BottomNavScreen,
-    navController: NavHostController
-) {
-    var route = screen.route
-    // If argument is supplied, navigate using that argument
-    argument?.let {
-        route = screen.route+"/$it"
-    }
-    navController.navigate(route)
-}
+

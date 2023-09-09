@@ -1,4 +1,4 @@
-package com.example.newsapp.presentation.Screen
+package com.example.gallery.navigation
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -7,22 +7,23 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentColor
+import androidx.compose.material.TopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-
+import androidx.compose.material.icons.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,9 +31,10 @@ import androidx.navigation.compose.rememberNavController
 fun MainScreen() {
     val navController = rememberNavController()
     Scaffold(
+
         bottomBar = {BottomBar(navController = navController)}
     ) {
-       BottomNavGraph(navController = navController)
+        BottomNavGraph(navHostController = navController)
 
     }
 
@@ -42,27 +44,27 @@ fun MainScreen() {
 @Composable
 fun BottomBar(navController : NavHostController) {
     val screens = listOf(
-        BottomNavScreen.Home,
+        BottomNaviScreen.Photos,
 
-        BottomNavScreen.Article
+        BottomNaviScreen.Folder
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
     BottomNavigation(
-        modifier = Modifier.background(brush = Brush.horizontalGradient(colors = listOf(Color.Transparent,
-            Color.LightGray)))
-
+        modifier = Modifier.background(brush = Brush.horizontalGradient(colors = listOf(
+        Color.Transparent,
+        Color.LightGray)))
     ) {
-     screens.forEach {screen->
-         AddItem(
-             screen = screen,
-             currentDestination = currentDestination,
-             navController = navController
-         )
-         
-     }
+        screens.forEach {screen->
+            AddItem(
+                screen = screen,
+                currentDestination = currentDestination,
+                navController = navController
+            )
+
+        }
 
     }
 
@@ -71,7 +73,7 @@ fun BottomBar(navController : NavHostController) {
 
 @Composable
 fun RowScope.AddItem(
-    screen: BottomNavScreen,
+    screen: BottomNaviScreen,
     currentDestination: NavDestination?,
     navController: NavHostController
 ) {
@@ -80,10 +82,8 @@ fun RowScope.AddItem(
             Text(text = screen.name)
         },
         icon = {
-            Icon(
-                imageVector = screen.icon,
-                contentDescription = "Navigation Icon"
-            )
+               screen.icon()
+
         },
         selected = currentDestination?.hierarchy?.any {
             it.route == screen.route
