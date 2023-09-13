@@ -9,6 +9,8 @@
 The Weather App is a modern, feature-rich weather application built using the latest Android technologies, following the principles of Clean Architecture.
 It provides users with up-to-date weather information for any location in the world and offers a clean and intuitive Material Design 3 user interface.
 
+## Api Used from here : https://open-meteo.com/en/docs
+
 ## Features
 
 - **Current Weather**: Get real-time weather data for your location.
