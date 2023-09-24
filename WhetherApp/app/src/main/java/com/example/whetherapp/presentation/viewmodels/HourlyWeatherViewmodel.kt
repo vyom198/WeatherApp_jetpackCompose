@@ -1,5 +1,6 @@
-package com.example.whetherapp.presentation
+package com.example.whetherapp.presentation.viewmodels
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -10,7 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.whetherapp.data.location.DefaultLocationTracker
 import com.example.whetherapp.domain.Usecases.GetHourlyWeather
-import com.example.whetherapp.domain.model.Hourly
+import com.example.whetherapp.presentation.states.HourlyWeatherState
 import com.example.whetherapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -23,19 +24,33 @@ class HourlyWeatherViewmodel @Inject constructor(
 
     var state by mutableStateOf(HourlyWeatherState())
 
+    @SuppressLint("SuspiciousIndentation")
     @RequiresApi(Build.VERSION_CODES.O)
-    fun fetchHourlyWeather() {
+    fun fetchHourlyWeather(latitude: Double? = null, longitude: Double? = null) {
         viewModelScope.launch {
 
             state= state.copy(isLoading = true)
 
-            try {
-                val location = locationTracker.getLocation()
 
-                if (location != null) {
-                    Log.d("ViewModel2", "Location obtained: $location")
-
-                    val weatherFlow = gethourlyWeather.invoke(location.latitude, location.longitude)
+                try {
+                    val location = if (latitude != null && longitude != null) {
+                        Pair(latitude, longitude)
+                    } else {
+                        val currentlocation = locationTracker.getLocation()
+                        if (currentlocation != null) {
+                            Log.d("ViewModel2", "Location obtained: $currentlocation")
+                            Pair(currentlocation.latitude, currentlocation.longitude)
+                        } else {
+                            state = state.copy(
+                                isLoading = false,
+                                data = null,
+                                error = "Location not available"
+                            )
+                            return@launch
+                        }
+                    }
+                    val weatherFlow = gethourlyWeather.invoke(location.first,
+                        location.second)
                     Log.d("ViewModel2", "Weather data fetching started")
 
                     weatherFlow.collect { resource->
@@ -53,11 +68,8 @@ class HourlyWeatherViewmodel @Inject constructor(
 
                         }
                     }
-                } else  {
-                    state = state.copy(isLoading = false, data = null,error = "Location not available")
-                    Log.e("ViewModel2", "Location not available")
                 }
-            } catch (e: Exception) {
+             catch (e: Exception) {
                 state = state.copy(isLoading = false, data =null,error = "error fetching weather")
                 Log.e("ViewModel2", "Error fetching weather: ${e.message}")
             }

@@ -13,6 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.whetherapp.presentation.composables.AllWeatherComposable
+import com.example.whetherapp.presentation.navigation.AppNavigation
+
 
 import com.example.whetherapp.ui.theme.WhetherAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +31,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                       AllWeatherComposable()
+                AppNavigation()
                 }
 
             }

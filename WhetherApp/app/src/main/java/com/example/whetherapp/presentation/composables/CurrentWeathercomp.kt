@@ -1,10 +1,7 @@
 package com.example.whetherapp.presentation.composables
 
 import android.util.Log
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,28 +11,25 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.whetherapp.domain.model.CurrentWeather
-import com.example.whetherapp.presentation.CurrentWeatherState
+import com.example.whetherapp.presentation.states.CurrentWeatherState
 import com.example.whetherapp.presentation.CurrentWeatherViewModel
-import com.example.whetherapp.presentation.DailyweatherState
+import com.example.whetherapp.presentation.states.DailyweatherState
 
 @Composable
 fun CurrentWeathercard(
     modifier: Modifier,
-    state:CurrentWeatherState,
-  state1:DailyweatherState,
+    state: CurrentWeatherState,
+    state1: DailyweatherState,
     currentWeatherViewModel: CurrentWeatherViewModel
 
 ) {

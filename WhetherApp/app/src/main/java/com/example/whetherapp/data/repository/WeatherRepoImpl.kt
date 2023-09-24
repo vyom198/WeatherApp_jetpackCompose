@@ -3,7 +3,7 @@ package com.example.whetherapp.data.repository
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import com.example.whetherapp.data.network.Weatherapi
+import com.example.whetherapp.data.network_and_dao.Weatherapi
 import com.example.whetherapp.domain.model.CurrentWeather
 import com.example.whetherapp.domain.model.Daily
 import com.example.whetherapp.domain.model.Hourly
