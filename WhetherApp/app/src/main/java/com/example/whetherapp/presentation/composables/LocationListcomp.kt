@@ -136,8 +136,9 @@ fun LocationList(navController: NavHostController,
                      ) {
 
                          RadioButton(
-                             selected = searchcityViewmodel.selectedCityid== it.id, onClick = {
-                                 searchcityViewmodel.selectedCityid= it.id
+                             selected = searchcityViewmodel.selectedCity.value== it, onClick = {
+                                 searchcityViewmodel.selectedCity.value= it
+                                 searchcityViewmodel.switchState =false
                                  searchcityViewmodel.selectedLatitude.value = it.latitude
                                  searchcityViewmodel.selectedLongitude.value = it.longitude
 
@@ -202,7 +203,7 @@ fun SwitchWithIcon(
              .toggleable(
                  value =searchcityViewmodel.switchState ,
                  onValueChange = {
-
+                      searchcityViewmodel.selectedCity.value = null
                      searchcityViewmodel.toggleSwitchState(it)
 
                  },

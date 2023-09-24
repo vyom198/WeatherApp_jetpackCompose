@@ -36,18 +36,13 @@ class SearchcityViewmodel @Inject constructor(
     var selectedCity = mutableStateOf<CityEntity?>(null)
         private set
 
-    var selectedCityid  by  mutableStateOf( selectedCity.value?.id)
 
 
 
-    var switchState by mutableStateOf(false)
-        private set
+    var switchState by mutableStateOf(true)
+        internal set
 
-
-
-
-
-   var  selectedLatitude = mutableStateOf<Double?>(null)
+    var  selectedLatitude = mutableStateOf<Double?>(null)
        private set
 
     var  selectedLongitude = mutableStateOf<Double?>(null)

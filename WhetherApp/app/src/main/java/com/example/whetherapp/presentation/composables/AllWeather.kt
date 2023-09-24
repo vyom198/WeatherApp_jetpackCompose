@@ -104,8 +104,7 @@ fun AllWeatherComposable( navController: NavHostController,
 
         if (granted) {
             permissionStatus = true
-            switchState = true
-            Log.d("toggle", switchState.toString())
+
         }
     }
 
