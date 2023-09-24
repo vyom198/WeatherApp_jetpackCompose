@@ -1,4 +1,4 @@
-package com.example.whetherapp.data.network
+package com.example.whetherapp.data.network_and_dao
 
 import com.example.whetherapp.data.model.AllWeather_Dto
 import retrofit2.Response

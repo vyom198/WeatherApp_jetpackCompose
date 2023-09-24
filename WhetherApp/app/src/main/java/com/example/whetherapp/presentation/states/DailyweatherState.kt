@@ -1,4 +1,4 @@
-package com.example.whetherapp.presentation
+package com.example.whetherapp.presentation.states
 
 import com.example.whetherapp.domain.model.Daily
 import java.time.DayOfWeek

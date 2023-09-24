@@ -1,35 +1,24 @@
 package com.example.whetherapp.presentation
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Context
 import android.location.Geocoder
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.whetherapp.data.location.DefaultLocationTracker
 import com.example.whetherapp.domain.Usecases.GetCurrentWeather
 
 
 import com.example.whetherapp.domain.location.LocationTracker
-import com.example.whetherapp.domain.model.CurrentWeather
+import com.example.whetherapp.presentation.states.CurrentWeatherState
 import com.example.whetherapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
@@ -48,26 +37,38 @@ class CurrentWeatherViewModel @Inject constructor(
     var state by mutableStateOf(CurrentWeatherState())
         private set
     @SuppressLint("SuspiciousIndentation")
-    fun fetchCurrentWeather() {
+    fun fetchCurrentWeather(latitude: Double? = null, longitude: Double? = null) {
         viewModelScope.launch {
 
-          state= state.copy(isLoading = true)
+            state= state.copy(isLoading = true)
 
             try {
-                val location = locationTracker.getLocation()
-
-                if (location != null) {
-                    Log.d("ViewModel", "Location obtained: $location")
-                       _city.value = getCityName(location.latitude,location.longitude).toString()
-
+                val location = if (latitude != null && longitude != null) {
+                    Pair(latitude, longitude)
+                }else {
+                    val currentlocation = locationTracker.getLocation()
+                    if (currentlocation != null) {
+                        Log.d("ViewModel", "Location obtained: $currentlocation")
+                        Pair(currentlocation.latitude, currentlocation.longitude)
+                    } else {
+                        state = state.copy(
+                            isLoading = false,
+                            data = null,
+                            error = "Location not available"
+                        )
+                        return@launch
+                    }
+                }
+                    _city.value = getCityName(location.first, location.second).toString()
+                     Log.d("ViewModel", _city.value)
                     val weatherFlow = getCurrentWeather
-                        .invoke(location.latitude, location.longitude)
+                        .invoke(location.first, location.first)
                     Log.d("ViewModel", "Weather data fetching started")
 
                     weatherFlow.collect { resource->
                         when (resource) {
                             is Resource.Success -> {
-                              state = state.copy(isLoading = false, data = resource.data,error = null)
+                                state = state.copy(isLoading = false, data = resource.data,error = null)
                                 Log.d("ViewModel", "Weather data fetched successfully: ${resource.data}")
 
                             }
@@ -78,10 +79,8 @@ class CurrentWeatherViewModel @Inject constructor(
 
                         }
                     }
-                } else {
-                    state = state.copy(isLoading = false, data = null,error = "Location not available")
-                    Log.e("ViewModel", "Location not available")
-                }
+
+
             } catch (e: Exception) {
                 state = state.copy(isLoading = false, data =null,error = "error fetching weather")
                 Log.e("ViewModel", "Error fetching weather: ${e.message}")
@@ -98,7 +97,7 @@ class CurrentWeatherViewModel @Inject constructor(
                     val address = addresses[0]
                     val city = address.locality
                     city
-                // Return the city name
+                    // Return the city name
                 } else {
                     null // No addresses found
                 }

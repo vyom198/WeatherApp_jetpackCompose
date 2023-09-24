@@ -1,9 +1,13 @@
 package com.example.whetherapp.domain.di
 
-import com.example.whetherapp.data.network.Weatherapi
+import androidx.lifecycle.SavedStateHandle
+import com.example.whetherapp.data.network_and_dao.CityDao
+import com.example.whetherapp.data.network_and_dao.SearchApi
+import com.example.whetherapp.data.network_and_dao.Weatherapi
+import com.example.whetherapp.data.repository.SearchRepoImpl
 import com.example.whetherapp.data.repository.WeatherRepoImpl
+import com.example.whetherapp.domain.repositroy.ResultsRepo
 import com.example.whetherapp.domain.repositroy.WeatherRepo
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +22,15 @@ object RepositoryModule {
     @Singleton
     fun provideWeatherRepository(
         weatherapi: Weatherapi
-    ): WeatherRepo{
+    ): WeatherRepo {
         return WeatherRepoImpl(weatherapi)
+
     }
+        @Provides
+        @Singleton
+        fun  provideSearchRepository(
+            searchApi: SearchApi, cityDao: CityDao
+        ) : ResultsRepo{return SearchRepoImpl(searchApi,cityDao)}
+
+
 }
