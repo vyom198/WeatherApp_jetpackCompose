@@ -1,6 +1,6 @@
 # WeatherApp_jetpackCompose
 
-<img src="https://github.com/vyom198/WeatherApp_jetpackCompose/assets/112750331/6c5c1b06-f4a9-44d8-8629-d3d289e7b7ec=250x250" alt="Weather App Screenshot" width="200">
+<img src="https://github.com/vyom198/WeatherApp_jetpackCompose/assets/112750331/WhetherApp/Screenshot_20230909_161254.png" alt="Weather App Screenshot" width="200">
 <img src="https://github.com/vyom198/WeatherApp_jetpackCompose/assets/112750331/54baf8a1-7a27-48bf-9fee-e2648fd275b3" alt="Weather App Screenshot" width="200">
 <img src="https://github.com/vyom198/WeatherApp_jetpackCompose/assets/112750331/90a0be06-468d-4087-821f-043fd82cd8e6" alt="Weather App Screenshot" width="200">
 
